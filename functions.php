@@ -739,3 +739,13 @@ if ( ! is_user_logged_in() ) {
 function print_login_to_see() {
 echo '<a href="' . get_permalink(wc_get_page_id('myaccount')) . '">' . __('Log in of registreer om de prijzen te bekijken en af te rekenen.', 'theme_name') . '</a>';
 }
+//Remove Add to Cart, Add View Product Button @ WooCommerce Loop//
+// First, remove Add to Cart Button
+remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
+// Second, add View Product Button
+add_action( 'woocommerce_after_shop_loop_item', 'view_product_button', 10 );
+function view_product_button() {
+global $product;
+$link = $product->get_permalink();
+echo '<a href="' . $link . '" class="button addtocartbutton">Bekijk dit product</a>';
+}
