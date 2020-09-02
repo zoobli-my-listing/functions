@@ -751,3 +751,5 @@ echo '<a href="' . $link . '" class="button addtocartbutton">Bekijk dit product<
 }
 //Hide Prices on the Shop & Category Pages//
 remove_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price', 10 );
+//Remove “Default Sorting” Dropdown @ WooCommerce Shop & Archive Pages//
+remove_action( 'woocommerce_before_shop_loop', 'woocommerce_catalog_ordering', 30 );
