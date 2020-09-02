@@ -749,3 +749,5 @@ global $product;
 $link = $product->get_permalink();
 echo '<a href="' . $link . '" class="button addtocartbutton">Bekijk dit product</a>';
 }
+//Hide Prices on the Shop & Category Pages//
+remove_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price', 10 );
