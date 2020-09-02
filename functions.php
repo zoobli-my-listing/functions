@@ -737,7 +737,7 @@ if ( ! is_user_logged_in() ) {
 }
 }
 function print_login_to_see() {
-echo '<a href="' . get_permalink(wc_get_page_id('myaccount')) . '">' . __('Log in of registreer om de prijzen te bekijken en af te rekenen.', 'theme_name') . '</a>';
+echo '<a href="' . get_permalink(wc_get_page_id('myaccount')) . '">' . __('Log in of registreer om af te rekenen.', 'theme_name') . '</a>';
 }
 //Remove Add to Cart, Add View Product Button @ WooCommerce Loop//
 // First, remove Add to Cart Button
