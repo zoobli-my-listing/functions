@@ -600,3 +600,4 @@ function redefine_products_per_page( $per_page ) {
   $per_page = 8;
   return $per_page;
 }
+//Create Custom WooCommerce Product Tabs with Advanced Custom Fields//
