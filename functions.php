@@ -652,3 +652,32 @@ if (class_exists('acf')) {
 		]);
 	});
 }
+//Add CF7 to the Single Product Page//
+add_action( 'woocommerce_single_product_summary', 'woocommerce_cf7_single_product', 30 );
+function woocommerce_cf7_single_product() {
+echo '<button type="submit" id="trigger_cf" class="single_add_to_cart_button button alt">Product Inquiry</button>';
+echo '<div id="product_inq" style="display:none">';
+echo do_shortcode('[contact-form-7 id="2989" title="Vraag product"]');
+echo '</div>';
+}
+// 2. Echo Javascript: 
+// a) on click, display CF7
+// b) and populate CF7 subject with Product Name
+// c) and change CF7 button to "Close"
+add_action( 'woocommerce_single_product_summary', 'on_click_show_cf7_and_populate', 40 );
+function on_click_show_cf7_and_populate() {
+  ?>
+    <script type="text/javascript">
+        jQuery('#trigger_cf').on('click', function(){
+      if ( jQuery(this).text() == 'Product vraag' ) {
+                   jQuery('#product_inq').css("display","block");
+                   jQuery('input[name="your-subject"]').val('<?php the_title(); ?>');
+         jQuery("#trigger_cf").html('Sluiten'); 
+      } else {
+         jQuery('#product_inq').hide();
+         jQuery("#trigger_cf").html('Product vraag'); 
+      }
+        });
+    </script>
+   <?php   
+}
