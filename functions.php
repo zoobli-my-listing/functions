@@ -724,3 +724,54 @@ function woocommerce_product_class( $classname, $product_type ) {
     }
     return $classname;
 }
+//“Is This a Gift?” Checkbox @ Single Product Page//
+// 1. Display Is this a Gift checkbox 
+add_action( 'woocommerce_before_add_to_cart_quantity', 'is_this_gift_add_cart', 35 );
+function is_this_gift_add_cart() {     
+      ?>
+      <p class="">
+      <label class="checkbox">
+      <input type="checkbox" class="woocommerce-form__input woocommerce-form__input-checkbox input-checkbox" name="is-gift" id="is-gift" value="Yes"><span>Is dit een geschenk?</span>
+      </label>
+      </p>
+ 
+      <?php
+}
+// 2. Add the custom field to $cart_item
+add_filter( 'woocommerce_add_cart_item_data', 'store_gift', 10, 2 );
+function store_gift( $cart_item, $product_id ) {
+if( isset( $_POST['is-gift'] ) && $_POST['is-gift'] == "Yes" ) {
+   $cart_item['is-gift'] = $_POST['is-gift'];
+}
+return $cart_item; 
+}
+// 3. Preserve the custom field in the session
+add_filter( 'woocommerce_get_cart_item_from_session', 'get_cart_items_from_session', 10, 2 );
+function get_cart_items_from_session( $cart_item, $values ) {
+if ( isset( $values['is-gift'] ) ){
+   $cart_item['is-gift'] = $values['is-gift'];
+}
+return $cart_item;
+}
+// 4. If gift in cart, edit checkout behavior:
+// a) open shipping by default
+// b) rename shipping title
+add_action ( 'woocommerce_before_checkout_form', 'gift_checkout' );
+function gift_checkout() {
+   $itsagift = false;
+    
+   foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
+      if ( isset( $cart_item['is-gift'] ) ) {
+         $itsagift = true;
+         break;
+      }
+   } 
+   if ( $itsagift == true ) {
+      add_filter( 'woocommerce_ship_to_different_address_checked', '__return_true' );
+      add_filter( 'gettext', 'translate_shipping_gift' );
+   }  
+}
+function translate_shipping_gift( $translated ) {
+$translated = str_ireplace( 'Ship to a different address?', 'Voor wie is dit geschenk?', $translated );
+return $translated;
+}
