@@ -724,3 +724,18 @@ function woocommerce_product_class( $classname, $product_type ) {
     }
     return $classname;
 }
+//Hide Price & Add to Cart for Logged Out Users//
+add_action( 'init', 'hide_price_add_cart_not_logged_in' );
+function hide_price_add_cart_not_logged_in() {   
+if ( ! is_user_logged_in() ) {      
+ remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
+ remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_add_to_cart', 30 );
+ remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_price', 10 );
+ remove_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price', 10 );   
+ add_action( 'woocommerce_single_product_summary', 'print_login_to_see', 31 );
+ add_action( 'woocommerce_after_shop_loop_item', 'print_login_to_see', 11 );
+}
+}
+function print_login_to_see() {
+echo '<a href="' . get_permalink(wc_get_page_id('myaccount')) . '">' . __('Log in of registreer om de prijzen te bekijken en af te rekenen.', 'theme_name') . '</a>';
+}
