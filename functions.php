@@ -755,3 +755,16 @@ remove_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_l
 remove_action( 'woocommerce_before_shop_loop', 'woocommerce_catalog_ordering', 30 );
 //Remove “Showing X Results” @ Shop Page//
 remove_action( 'woocommerce_before_shop_loop', 'woocommerce_result_count', 20 );
+//Add steps to checkout//
+add_action( 'woocommerce_checkout_shipping', 'checkout_step1' );
+function checkout_step1() {
+   echo '<p class="steps">STAP2</p>';
+}
+add_action( 'woocommerce_checkout_billing', 'checkout_step2' );
+function checkout_step2() {
+   echo '<p class="steps">STAP1</p>';
+}
+add_action( 'woocommerce_checkout_before_order_review_heading', 'checkout_step3' );
+function checkout_step3() {
+   echo '<p class="steps">STAP3</p>';
+}
