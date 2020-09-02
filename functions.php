@@ -601,3 +601,54 @@ function redefine_products_per_page( $per_page ) {
   return $per_page;
 }
 //Create Custom WooCommerce Product Tabs with Advanced Custom Fields//
+if (class_exists('acf')) {
+	add_action('acf/init', function() {
+		$fields = [
+			[
+				'key' => 'field_custom_tabs_repeater',
+				'label' => __('Aangepaste tabs', 'txtdomain'),
+				'name' => 'custom_tabs_repeater',
+				'type' => 'repeater',
+				'layout' => 'row',
+				'button_label' => __('Voeg een nieuwe tab toe', 'txtdomain'),
+				'sub_fields' => [
+					[
+						'key' => 'field_tab_title',
+						'label' => __('Tab title', 'txtdomain'),
+						'name' => 'tab_title',
+						'type' => 'text',
+					],
+					[
+						'key' => 'field_tab_contents',
+						'label' => __('Inhoud tab', 'txtdomain'),
+						'name' => 'tab_contents',
+						'type' => 'wysiwyg',
+						'tabs' => 'all',
+						'toolbar' => 'full',
+						'media_upload' => 1,
+						'delay' => 0,
+					],
+				],
+			],
+		];
+ 
+		acf_add_local_field_group([
+			'key' => 'group_custom_woocommerce_tabs',
+			'title' => __('Custom Tabs', 'txtdomain'),
+			'fields' => $fields,
+			'label_placement' => 'top',
+			'menu_order' => 0,
+			'style' => 'default',
+			'position' => 'normal',
+			'location' => [
+				[
+					[
+						'param' => 'post_type',
+						'operator' => '==',
+						'value' => 'product'
+					]
+				]
+			],
+		]);
+	});
+}
