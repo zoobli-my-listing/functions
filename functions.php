@@ -655,7 +655,7 @@ if (class_exists('acf')) {
 //Add CF7 to the Single Product Page//
 add_action( 'woocommerce_single_product_summary', 'woocommerce_cf7_single_product', 30 );
 function woocommerce_cf7_single_product() {
-echo '<button type="submit" id="trigger_cf" class="single_add_to_cart_button button alt">Product Inquiry</button>';
+echo '<button type="submit" id="trigger_cf" class="single_add_to_cart_button button alt">Product vraag</button>';
 echo '<div id="product_inq" style="display:none">';
 echo do_shortcode('[contact-form-7 id="2989" title="Vraag product"]');
 echo '</div>';
