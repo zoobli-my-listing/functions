@@ -681,3 +681,22 @@ function on_click_show_cf7_and_populate() {
     </script>
    <?php   
 }
+//Truncate Short Description With “Read More” Toggle//
+add_action( 'woocommerce_after_single_product', 'woocommerce_short_description_truncate_read_more' );
+function woocommerce_short_description_truncate_read_more() { 
+   wc_enqueue_js('
+      var show_char = 25;
+      var ellipses = "... ";
+      var content = $(".woocommerce-product-details__short-description").html();
+      if (content.length > show_char) {
+         var a = content.substr(0, show_char);
+         var b = content.substr(show_char - content.length);
+         var html = a + "<span class=\'truncated\'>" + ellipses + "<a class=\'read-more\'>Lees meer</a></span><span class=\'truncated\' style=\'display:none\'>" + b + "</span>";
+         $(".woocommerce-product-details__short-description").html(html);
+      }
+      $(".read-more").click(function(e) {
+         e.preventDefault();
+         $(".woocommerce-product-details__short-description .truncated").toggle();
+      });
+   ');
+}
