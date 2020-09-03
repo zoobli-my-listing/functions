@@ -688,16 +688,28 @@ function remove_built_in_roles() {
         }
     }
 }
-function sv_edit_my_memberships_actions( $actions ) {
+function edit_my_memberships_actions( $actions ) {
 	// remove the "Cancel" action for members
 	unset( $actions['cancel'] );
 	return $actions;
 }
-add_filter( 'wc_memberships_members_area_my-memberships_actions', 'sv_edit_my_memberships_actions' );
-add_filter( 'wc_memberships_members_area_my-membership-details_actions', 'sv_edit_my_memberships_actions' );
+add_filter( 'wc_memberships_members_area_my-memberships_actions', 'edit_my_memberships_actions' );
+add_filter( 'wc_memberships_members_area_my-membership-details_actions', 'edit_my_memberships_actions' );
 //Remove End Date Column from My Memberships//
-function sv_remove_membership_end_date_column( $columns ) {
+function remove_membership_end_date_column( $columns ) {
 	unset( $columns['membership-end-date'] );
 	return $columns;
 }
-add_filter( 'wc_memberships_my_memberships_column_names', 'sv_remove_membership_end_date_column' );
+add_filter( 'wc_memberships_my_memberships_column_names', 'remove_membership_end_date_column' );
+//Grant Access only from Completed Orders//
+function sv_wc_memberships_remove_processing_access() {
+        // make sure Memberships is active first
+        if ( function_exists( 'wc_memberships' ) ) {
+                remove_action( 'woocommerce_order_status_processing', array( wc_memberships()->get_plans_instance(), 'grant_access_to_membership_from_order' ), 9 );
+        }
+        // Add support for Teams for Memberships but make sure it is active first
+        if ( function_exists( 'wc_memberships_for_teams' ) ) {
+                remove_action( 'woocommerce_order_status_processing', array( wc_memberships_for_teams()->get_orders_instance(), 'process_team_actions_for_order' ), 10 );
+        }
+}
+add_action( 'init', 'wc_memberships_remove_processing_access' );
