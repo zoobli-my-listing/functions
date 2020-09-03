@@ -695,3 +695,9 @@ function sv_edit_my_memberships_actions( $actions ) {
 }
 add_filter( 'wc_memberships_members_area_my-memberships_actions', 'sv_edit_my_memberships_actions' );
 add_filter( 'wc_memberships_members_area_my-membership-details_actions', 'sv_edit_my_memberships_actions' );
+//Remove End Date Column from My Memberships//
+function sv_remove_membership_end_date_column( $columns ) {
+	unset( $columns['membership-end-date'] );
+	return $columns;
+}
+add_filter( 'wc_memberships_my_memberships_column_names', 'sv_remove_membership_end_date_column' );
