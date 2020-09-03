@@ -753,3 +753,14 @@ add_action( 'woocommerce_checkout_before_order_review_heading', 'checkout_step3'
 function checkout_step3() {
    echo '<p class="steps">STAP3</p>';
 }
+//Remove built-in user roles//
+add_action('admin_menu', 'remove_built_in_roles');
+function remove_built_in_roles() {
+    global $wp_roles;
+    $roles_to_remove = array('subscriber', 'contributor', 'author', 'editor');
+    foreach ($roles_to_remove as $role) {
+        if (isset($wp_roles->roles[$role])) {
+            $wp_roles->remove_role($role);
+        }
+    }
+}
