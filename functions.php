@@ -600,58 +600,6 @@ function redefine_products_per_page( $per_page ) {
   $per_page = 8;
   return $per_page;
 }
-//Create Custom WooCommerce Product Tabs with Advanced Custom Fields//
-if (class_exists('acf')) {
-	add_action('acf/init', function() {
-		$fields = [
-			[
-				'key' => 'field_custom_tabs_repeater',
-				'label' => __('Aangepaste tabs', 'txtdomain'),
-				'name' => 'custom_tabs_repeater',
-				'type' => 'repeater',
-				'layout' => 'row',
-				'button_label' => __('Voeg een nieuwe tab toe', 'txtdomain'),
-				'sub_fields' => [
-					[
-						'key' => 'field_tab_title',
-						'label' => __('Tab title', 'txtdomain'),
-						'name' => 'tab_title',
-						'type' => 'text',
-					],
-					[
-						'key' => 'field_tab_contents',
-						'label' => __('Inhoud tab', 'txtdomain'),
-						'name' => 'tab_contents',
-						'type' => 'wysiwyg',
-						'tabs' => 'all',
-						'toolbar' => 'full',
-						'media_upload' => 1,
-						'delay' => 0,
-					],
-				],
-			],
-		];
- 
-		acf_add_local_field_group([
-			'key' => 'group_custom_woocommerce_tabs',
-			'title' => __('Custom Tabs', 'txtdomain'),
-			'fields' => $fields,
-			'label_placement' => 'top',
-			'menu_order' => 0,
-			'style' => 'default',
-			'position' => 'normal',
-			'location' => [
-				[
-					[
-						'param' => 'post_type',
-						'operator' => '==',
-						'value' => 'product'
-					]
-				]
-			],
-		]);
-	});
-}
 //Add CF7 to the Single Product Page//
 add_action( 'woocommerce_single_product_summary', 'woocommerce_cf7_single_product', 30 );
 function woocommerce_cf7_single_product() {
@@ -700,30 +648,6 @@ function woocommerce_short_description_truncate_read_more() {
       });
    ');
 }
-//Create a New Product Type//
-// #1 Add New Product Type to Select Dropdown
-add_filter( 'product_type_selector', 'add_custom_product_type' );
-function add_custom_product_type( $types ){
-    $types[ 'custom' ] = 'Advertentie';
-    return $types;
-}
-// #2 Add New Product Type Class
-add_action( 'init', 'create_custom_product_type' );
-function create_custom_product_type(){
-    class WC_Product_Custom extends WC_Product {
-      public function get_type() {
-         return 'custom';
-      }
-    }
-}
-// #3 Load New Product Type Class
-add_filter( 'woocommerce_product_class', 'woocommerce_product_class', 10, 2 );
-function woocommerce_product_class( $classname, $product_type ) {
-    if ( $product_type == 'custom' ) {
-        $classname = 'WC_Product_Custom';
-    }
-    return $classname;
-}
 //Remove Add to Cart, Add View Product Button @ WooCommerce Loop//
 // First, remove Add to Cart Button
 remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
@@ -764,3 +688,10 @@ function remove_built_in_roles() {
         }
     }
 }
+function sv_edit_my_memberships_actions( $actions ) {
+	// remove the "Cancel" action for members
+	unset( $actions['cancel'] );
+	return $actions;
+}
+add_filter( 'wc_memberships_members_area_my-memberships_actions', 'sv_edit_my_memberships_actions' );
+add_filter( 'wc_memberships_members_area_my-membership-details_actions', 'sv_edit_my_memberships_actions' );
