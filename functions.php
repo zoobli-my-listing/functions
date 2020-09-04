@@ -688,3 +688,9 @@ function remove_built_in_roles() {
         }
     }
 }
+// WOOCOMMERCE - CHECKOUT - REMOVE ORDER NOTES//
+add_filter( 'woocommerce_checkout_fields' , 'remove_order_notes' );
+function remove_order_notes( $fields ) {
+unset($fields['order']['order_comments']);
+return $fields;
+}
