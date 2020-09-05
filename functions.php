@@ -694,3 +694,25 @@ function remove_order_notes( $fields ) {
 unset($fields['order']['order_comments']);
 return $fields;
 }
+//Add Privacy Policy Consent @ My Account Registration//
+add_action( 'woocommerce_register_form', 'add_registration_privacy_policy', 11 );
+function add_registration_privacy_policy() {
+woocommerce_form_field( 'privacy_policy_reg', array(
+   'type'          => 'checkbox',
+   'class'         => array('form-row privacy'),
+   'label_class'   => array('woocommerce-form__label woocommerce-form__label-for-checkbox checkbox'),
+   'input_class'   => array('woocommerce-form__input woocommerce-form__input-checkbox input-checkbox'),
+   'required'      => true,
+   'label'         => 'Ik heb het <a href="/privacy-policy">Privacybeleid</a> gelezen en goedgekeurd.',
+));
+} 
+// Show error if user does not tick
+add_filter( 'woocommerce_registration_errors', 'validate_privacy_registration', 10, 3 );
+function validate_privacy_registration( $errors, $username, $email ) {
+if ( ! is_checkout() ) {
+    if ( ! (int) isset( $_POST['privacy_policy_reg'] ) ) {
+        $errors->add( 'privacy_policy_reg_error', __( 'Gelieve het vakje van het privacybeleid aan te vinken om verder te gaan!', 'woocommerce' ) );
+    }
+}
+return $errors;
+}
