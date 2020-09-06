@@ -738,7 +738,7 @@ function on_click_show_cf7_and_populate() {
       if ( jQuery(this).text() == 'Vraag product' ) {
                    jQuery('#product_inq').css("display","block");
                    jQuery('input[name="your-subject"]').val('<?php the_title(); ?>');
-         jQuery("#trigger_cf").html('Close'); 
+         jQuery("#trigger_cf").html('Sluiten'); 
       } else {
          jQuery('#product_inq').hide();
          jQuery("#trigger_cf").html('Vraag product'); 
