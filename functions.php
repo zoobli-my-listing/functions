@@ -716,22 +716,22 @@ if ( ! is_checkout() ) {
 }
 return $errors;
 }
-//Add CF7 to the Single Product Page//
-// 1. Display Button and Echo CF7
-add_action( 'woocommerce_single_product_summary', 'woocommerce_cf7_single_product', 30 );
-function woocommerce_cf7_single_product() {
+//Add elementor form to the Single Product Page//
+// 1. Display Button and Echo elementor
+add_action( 'woocommerce_single_product_summary', 'woocommerce_elementor_single_product', 30 );
+function woocommerce_elementor_single_product() {
 echo '<button type="submit" id="trigger_cf" class="single_add_to_cart_button button alt">Vraag product</button>';
 echo '<div id="product_inq" style="display:none">';
-echo do_shortcode('[contact-form-7 id="2017" title="Vraag product"]');
+echo do_shortcode('[elementor-template id="2078"]');
 echo '</div>';
 }
 // --------------------------
 // 2. Echo Javascript: 
-// a) on click, display CF7
-// b) and populate CF7 subject with Product Name
-// c) and change CF7 button to "Close"
-add_action( 'woocommerce_single_product_summary', 'on_click_show_cf7_and_populate', 40 );
-function on_click_show_cf7_and_populate() {
+// a) on click, display elementor form
+// b) and populate elementor subject with Product Name
+// c) and change elementor button to "Close"
+add_action( 'woocommerce_single_product_summary', 'on_click_show_elementor_and_populate', 40 );
+function on_click_show_elementor_and_populate() {
   ?>
     <script type="text/javascript">
         jQuery('#trigger_cf').on('click', function(){
